@@ -143,7 +143,7 @@ then
 elif [ $ERROR -eq 0 ];
 then
 	echo "USB Drive successfully mounted for direct recording."
-if [ -d $USBPATH ]; then rm -rf $USBPATH; fi
+if [ -d $USBPATH ] && [ ! "$(ls -A $USBPATH)" ]; then rm -rf $USBPATH; fi
 fi
 }
 
