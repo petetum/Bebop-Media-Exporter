@@ -11,25 +11,27 @@
 # Special thanks for the Unofficial Bebop Hacking Guide (UBHG)
 # https://github.com/nicknack70/bebop
 
+# the following 2 lines ( and the "fi" at the very end of the script ) will unengage the power button
+# so you can power off the drone ( if neccesery ) while script is still running.
+if [ ! $1 ]; then exec /bin/onoffbutton/shortpress_3.sh foreground &
+elif [ $1 == "foreground" ]; then
+
 # debug
 echo ------------------------ DEBUG ------------------------
 echo "Script version: v1.4a"
 grep Hardware /proc/cpuinfo
 echo "Firmware version "$(cat /version.txt)
-ls /data/ftp
 echo
-ls /data/ftp/internal_000
+echo Contents of /data/ftp
+ls -x /data/ftp
 echo
-ls /bin/onoffbutton
+echo Contents of /data/ftp/internal_000
+ls -x /data/ftp/internal_000
+echo
+echo Contents of /bin/onoffbutton
+ls -x /bin/onoffbutton
 echo -------------------------------------------------------
 echo
-
-
-
-# the following 2 lines ( and the "fi" at the very end of the script ) will unengage the power button
-# so you can power off the drone ( if neccesery ) while script is still running.
-if [ ! $1 ]; then exec /bin/onoffbutton/shortpress_3.sh foreground &
-elif [ $1 == "foreground" ]; then
 
 # set user feedback
 SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }

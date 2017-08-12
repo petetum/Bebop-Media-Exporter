@@ -15,11 +15,15 @@ echo ------------------------ DEBUG ------------------------
 echo "Script version: v1.4a"
 grep Hardware /proc/cpuinfo
 echo "Firmware version "$(cat /version.txt)
-ls /data/ftp
 echo
-ls /data/ftp/internal_000
+echo Contents of /data/ftp
+ls -x /data/ftp
 echo
-ls /bin/onoffbutton
+echo Contents of /data/ftp/internal_000
+ls -x /data/ftp/internal_000
+echo
+echo Contents of /bin/onoffbutton
+ls -x /bin/onoffbutton
 echo -------------------------------------------------------
 echo
 
