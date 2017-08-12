@@ -1,0 +1,6 @@
+mv -f /data/ftp/reboot.sh /tmp/reboot.sh
+sleep 1
+chmod 755 /tmp/reboot.sh
+sleep 1
+sh -c '/tmp/reboot.sh > /dev/null 2>&1 &' &
+exit

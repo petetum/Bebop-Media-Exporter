@@ -451,19 +451,19 @@ else
 			echo "begin to remove original media and thumb files from internal memory"
 			if [ -f $INTPATH/$BBDIR/thumb/$THUMB ];
 			then
-echo				rm -f $INTPATH/$BBDIR/thumb/$THUMB
+				rm -f $INTPATH/$BBDIR/thumb/$THUMB
 			fi
 			if [ -f $INTPATH/$BBDIR/navdata/$PUD ];
 			then
-echo				rm -f $INTPATH/$BBDIR/navdata/$PUD
+				rm -f $INTPATH/$BBDIR/navdata/$PUD
 			fi
 			if [ -f $INTPATH/$BBDIR/media/$MEDIA ]; 
 			then
-echo				rm -f $INTPATH/$BBDIR/media/$MEDIA
+				rm -f $INTPATH/$BBDIR/media/$MEDIA
 			fi
 			if [ -f $INTPATH/$BBDIR/media/$DNGPLUS ];
 			then
-echo				rm -f $INTPATH/$BBDIR/media/$DNGPLUS
+				rm -f $INTPATH/$BBDIR/media/$DNGPLUS
 			fi
 			echo "remove complete (in theory). no check has been done if remove was successful"
 			echo "";

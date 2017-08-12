@@ -1,0 +1,23 @@
+for directory in $(find /data/ftp/ -maxdepth 1 -type d -regex ".*_[0-9][0-9][0-9]"); do
+if ! (( df | grep -q $directory )); then rm -rf $directory ; sync; fi; done
+
+INTMEM=/data/ftp/internal_000
+BBDIR=$( if grep -q Milos /proc/cpuinfo; then echo Bebop_2; else echo Bebop_Drone; fi )
+
+if [ -f /data/ftp/md5check_on ]; then rm -f /data/ftp/md5check_on; fi
+if [ -L $INTMEM/$BBDIR/media ]; then rm -f $INTMEM/$BBDIR/media ; mkdir $INTMEM/$BBDIR/media ; chmod 755 $INTMEM/$BBDIR/media ; fi
+if [ -L $INTMEM/$BBDIR/thumb ]; then rm -f $INTMEM/$BBDIR/thumb ; mkdir $INTMEM/$BBDIR/thumb ; chmod 755 $INTMEM/$BBDIR/thumb ; fi
+
+mount -o remount,rw /
+sleep 1
+if [ -f /bin/onoffbutton/feedback.sh ]; then rm -f /bin/onoffbutton/feedback.sh; fi
+if [ -f /bin/onoffbutton/shortpress_2.sh ]; then rm -f /bin/onoffbutton/shortpress_2.sh; fi
+if [ -f /bin/onoffbutton/shortpress_3.sh ]; then rm -f /bin/onoffbutton/shortpress_3.sh; fi
+if [ -f /bin/onoffbutton/shortpress_5.sh ]; then rm -f /bin/onoffbutton/shortpress_5.sh; fi
+if [ -f /bin/onoffbutton/shortpress_6.sh ]; then rm -f /bin/onoffbutton/shortpress_6.sh; fi
+if [ -f /bin/onoffbutton/shortpress_8.sh ]; then rm -f /bin/onoffbutton/shortpress_8.sh; fi
+if [ -f /bin/onoffbutton/shortpress_9.sh ]; then rm -f /bin/onoffbutton/shortpress_9.sh; fi
+
+mount -o remount,ro /
+
+exit

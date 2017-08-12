@@ -1,0 +1,6 @@
+if df | grep '/dev/sda1'; then
+umount $( df | grep '/dev/sda1' | awk '{print $NF}' )
+sleep 1
+fi
+sh -c '/bin/onoffbutton/verylongpress_0.sh > /dev/null 2>&1 &' &
+exit

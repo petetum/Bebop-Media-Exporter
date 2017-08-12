@@ -631,7 +631,7 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    'Bebop Export Media to USB' for saving your files dirctly to a pendrive.
+    'Bebop Export Media to USB' for saving media files dirctly to USB drive.
     Copyright (C) 2016  Pete Tum http://github.com/petetum
 
     This program is free software: you can redistribute it and/or modify

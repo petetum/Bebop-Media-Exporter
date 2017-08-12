@@ -1,0 +1,3 @@
+/bin/onoffbutton/shortpress_8.sh foreground > /data/ftp/debug.txt
+unix2dos /data/ftp/debug.txt 
+exit
