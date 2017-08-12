@@ -70,9 +70,9 @@ cls
 ECHO.
 ECHO   Run one of the following scripts on your drone and see the debug file.
 ECHO.
-ECHO   2   Run shortpress_2
-ECHO   3   Run shortpress_3
-ECHO   8   Run shortpress_8
+ECHO   2   COLD START GPS
+ECHO   3   MOVE MEDIA FILES
+ECHO   8   ENABLE/DISABLE DIRECT RECORDING
 ECHO.
 ECHO   0   Back to Main menu
 ECHO.

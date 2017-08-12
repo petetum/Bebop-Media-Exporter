@@ -1,7 +1,7 @@
 #! /bin/sh
 # This script is for PARROT BEBOP and BEBOP 2 Dones.
 # Mounting script for recording to USB OTG Drive.
-# v1.4 by PeteTum 28/07/2017
+# v1.4a by PeteTum 12/08/2017
 #
 # Written by PeteTum.
 # http://youtube.com/c/PeteTum
@@ -11,8 +11,17 @@
 # https://github.com/Daggers/Bebop2CopyMoveRecord2USBDrive
 
 # debug
+echo ------------------------ DEBUG ------------------------
+echo "Script version: v1.4a"
 grep Hardware /proc/cpuinfo
-cat /version.txt
+echo "Firmware version "$(cat /version.txt)
+ls /data/ftp
+echo
+ls /data/ftp/internal_000
+echo
+ls /bin/onoffbutton
+echo -------------------------------------------------------
+echo
 
 # set user feedback
 SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1010000; }

@@ -1,7 +1,7 @@
 #! /bin/sh
 # This script is for PARROT BEBOP and BEBOP 2 Dones.
 # Moving media files from internal memory to USB OTG Drive.
-# v1.4 - 28/07/2017
+# v1.4a by PeteTum 12/08/2017
 #
 # Written by PeteTum.
 # http://youtube.com/c/PeteTum
@@ -12,8 +12,18 @@
 # https://github.com/nicknack70/bebop
 
 # debug
+echo ------------------------ DEBUG ------------------------
+echo "Script version: v1.4a"
 grep Hardware /proc/cpuinfo
-cat /version.txt
+echo "Firmware version "$(cat /version.txt)
+ls /data/ftp
+echo
+ls /data/ftp/internal_000
+echo
+ls /bin/onoffbutton
+echo -------------------------------------------------------
+echo
+
 
 
 # the following 2 lines ( and the "fi" at the very end of the script ) will unengage the power button
@@ -534,9 +544,6 @@ then
 		sync
 	fi
 	done
-
-# move broken encaps files from USB drive to internal memory
-	FIXENCAPS
 fi
 
 if [ $ERROR -eq 0 ];
@@ -548,13 +555,12 @@ then
 	MOVEMEDIA dng
 	MOVEMEDIA jpg
 	MOVEMEDIA mp4
-fi
-
-if [ $ERROR -eq 0 ];
-then
 # move broken encaps files from USB drive to internal memory
 	FIXENCAPS
+
 fi
+
+
 
 # user feedback
 if [ $ERROR -eq 1 ]; then

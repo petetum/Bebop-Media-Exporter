@@ -1,7 +1,7 @@
 #! /bin/sh
 # This script is for PARROT BEBOP and BEBOP 2 Dones.
 # Forcing GPS cold start
-# v1.4 - 28/07/2017
+# v1.4a by PeteTum 12/08/2017
 #
 # Written by PeteTum.
 # http://youtube.com/c/PeteTum
@@ -11,8 +11,17 @@
 # https://github.com/nicknack70/bebop
 
 # debug
+echo ------------------------ DEBUG ------------------------
+echo "Script version: v1.4a"
 grep Hardware /proc/cpuinfo
-cat /version.txt
+echo "Firmware version "$(cat /version.txt)
+ls /data/ftp
+echo
+ls /data/ftp/internal_000
+echo
+ls /bin/onoffbutton
+echo -------------------------------------------------------
+echo
 
 # detect hardware
 BBDIR=$( if grep -q Mykonos3 /proc/cpuinfo; then echo Bebop_Drone; elif grep -q Milos /proc/cpuinfo; then echo Bebop_2; fi )
