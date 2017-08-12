@@ -257,7 +257,7 @@ echo   Removing previous version scripts from your Drone . . .
 plink.exe -telnet -P 23 192.168.42.1 < remove.tn >nul 2>nul
 if %errorlevel% equ 1 goto telnet_remprev_error
 echo   Uploading script to your drone . . .
-ncftpput.exe 192.168.42.1 / ../shortpress_2.sh ../shortpress_3.sh ../shortpress_8.sh >nul 2>nul
+ncftpput.exe 192.168.42.1 / ../scripts/shortpress_2.sh ../scripts/shortpress_3.sh ../scripts/shortpress_8.sh >nul 2>nul
 if %errorlevel% equ 1 goto ftp_connection_error
 
 IF %VERS%==2 ncftpput.exe 192.168.42.1 / md5check_on >nul 2>nul
