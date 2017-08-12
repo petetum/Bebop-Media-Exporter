@@ -1,4 +1,4 @@
-# Bebop Export Media to USB
+# Bebop Export Media to USB by PeteTum
 For exporting media files from your Bebop Drone / Bebop 2 to external USB drive. 
 
                   !!!!!! CAUTION !!!!!!

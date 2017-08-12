@@ -208,16 +208,25 @@ REM ---------- INSTALL ---------
 SET M=
 cls
 :select
+Mode con cols=80 lines=38
 echo.
-echo    There will be 3 scripts installed on your drone.
+
+echo    There will be 3 scripts installed on your drone. 
+echo      Just press the power button on your drone the number of times below 
+echo      to start the scripts.
 echo.
-echo    COLDSTART - This will be used to cold start the GPS receiver in case
-echo    it cannot find signal. You can activate the script by pressing the
-echo    power button 2 times.
+echo    2 BUTTON PRESSES TO COLD START GPS.
+echo      If your drone has difficulties finding GPS signal then you could try 
+echo      to cold start the GPS receiver. It will only take a few seconds to complete.
 echo.
-echo    MOVE MEDIA - This is to move media files from your drone to the 
-echo    USB drive you attach. You can activate the script by pressing
-echo    the power button 3 times.
+echo    3 BUTTON PRESSES TO MOVE MEDIA FIMES from internal memory to USB drive
+echo      This script will also move navdata files if they are available.
+echo      (Please note. The drone will delete the navdata files when you turn it off.
+echo      If you want to save them you need to do so before you power off.)
+echo.
+echo    8 BUTTON PRESSES TO ENABLE/DISABLE DIRECT RECORDING TO USB DRIVE
+echo      This will enable/disable direct recording to USB drive.
+echo      Taks will complete very quickly in just a few seconds.
 echo.
 echo   ---------------------------------------------------------------------------
 echo.
@@ -237,6 +246,8 @@ echo        compare it to the original.
 echo        It takes twice the time to complete.
 echo.
 SET /P VERS=   Type 1 or 2 then press ENTER: 
+Mode con cols=80 lines=30
+
 cls
 echo.
 echo   Turn ON your Drone and
