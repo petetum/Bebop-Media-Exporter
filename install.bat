@@ -403,11 +403,6 @@ REM ---------- FORMAT ------------
 SET M=
 cls
 echo.
-echo   ===============================================================
-echo         FAT 32 Formatter (licensed under the GPL license) 
-echo       Copyright (C) Tom Thornhill www.ridgecrop.demon.co.uk 
-echo   ===============================================================
-echo.
 echo   Connect your USB drive to your PC
 echo.
 echo   Press any key to continue.
@@ -483,11 +478,6 @@ goto formatdo
 :OVERRIDE
 cls
 echo.
-echo   ===============================================================
-echo         FAT 32 Formatter (licensed under the GPL license) 
-echo       Copyright (C) Tom Thornhill www.ridgecrop.demon.co.uk 
-echo   ===============================================================
-echo.
 echo   WARNING! MAKE SURE YOU ENTER THE RIGHT DEVICE LETTER!
 ECHO   YOU WILL LOOSE ALL DATA ON THE DRIVE!
 echo.
@@ -519,6 +509,12 @@ cls
 color 4B
 SET SURE=
 
+echo   ===============================================================
+echo         FAT 32 Formatter (licensed under the GPL license) 
+echo       Copyright (C) Tom Thornhill www.ridgecrop.demon.co.uk 
+echo   ===============================================================
+echo.
+echo.
 echo Warning ALL data on drive '%LETTER%' will be lost irretrievably, are you sure
 SET /P SURE= (y/n) :
 
