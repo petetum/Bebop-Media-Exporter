@@ -11,20 +11,17 @@
 # https://github.com/nicknack70/bebop
 
 # debug
-echo ------------------------ DEBUG ------------------------
+echo "------------------------ DEBUG ------------------------"
 echo "Script version: v1.4a"
 grep Hardware /proc/cpuinfo
 echo "Firmware version "$(cat /version.txt)
 echo
-echo Contents of /data/ftp
+echo "Contents of /data/ftp"
 ls -x /data/ftp
 echo
-echo Contents of /data/ftp/internal_000
-ls -x /data/ftp/internal_000
-echo
-echo Contents of /bin/onoffbutton
-ls -x /bin/onoffbutton
-echo -------------------------------------------------------
+echo "List of devices starting with /dev/sd"
+ls -x /dev/sd*
+echo "-------------------------------------------------------"
 echo
 
 # detect hardware
