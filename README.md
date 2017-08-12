@@ -16,8 +16,8 @@ The author shall not be held responsible for any damages that may occur to your 
 Proceed at your own risk.
 
 
-Tested on Bebop Drone - firmware version ?.?.?
-Tested on Bebop 2 - firmware version ?.?.?
+Tested on Bebop Drone - firmware version 4.0.6
+NOT Tested on Bebop 2 - but it should work just fine
 
 How to install the scripts:
   - Download file
