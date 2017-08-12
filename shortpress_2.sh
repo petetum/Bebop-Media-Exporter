@@ -10,6 +10,10 @@
 # Special thanks for the Unofficial Bebop Hacking Guide (UBHG)
 # https://github.com/nicknack70/bebop
 
+# debug
+grep Hardware /proc/cpuinfo
+cat /version.txt
+
 # detect hardware
 BBDIR=$( if grep -q Mykonos3 /proc/cpuinfo; then echo Bebop_Drone; elif grep -q Milos /proc/cpuinfo; then echo Bebop_2; fi )
 

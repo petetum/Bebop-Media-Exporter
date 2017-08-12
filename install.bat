@@ -128,7 +128,7 @@ GOTO menu
 cls
 color E0
 echo.
-echo   If you want a to keep the log then please save it by going File menu - Save As..
+echo   If you want a to keep the log then please go to File menu - Save As..
 echo   You can also send the debug information to me so I can have a look.
 echo   Please send it to bebopexporttousb@gmail.com
 echo   Press any key to continue.
@@ -280,15 +280,7 @@ pause >nul
 cls
 echo.
 echo.
-echo  I know it's a bit early to ask.. but do You like my work?
-echo.
-echo  If you do then why not buy me a coffee. I like it with cinnamon on top :)
-echo.
-echo  It won't brake the bank..  Click the link below to donate me.
-echo  https://goo.gl/wxkBjX
-echo.
-echo  I guess it's too early to tell. Come back later 
-echo  and get the link from the README.
+echo   Please read the README now. :)
 echo.
 echo.
 echo   Press any key to go back to MAIN MENU.

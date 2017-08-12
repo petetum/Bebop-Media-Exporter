@@ -10,8 +10,12 @@
 # Special thanks for https://github.com/Daggers/
 # https://github.com/Daggers/Bebop2CopyMoveRecord2USBDrive
 
+# debug
+grep Hardware /proc/cpuinfo
+cat /version.txt
+
 # set user feedback
-SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }
+SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1010000; }
 ERR_SOUND() { BLDC_Test_Bench -M 2 >/dev/null 2>&1; usleep 600000; }
 LIGHT_R() { BLDC_Test_Bench -G 1 0 0 >/dev/null 2>&1; }
 LIGHT_O() { BLDC_Test_Bench -G 1 1 0 >/dev/null 2>&1; }
@@ -262,16 +266,21 @@ then
 elif [ ! $( echo $USBPATH | grep "internal_000" ) ]
 then
 	echo usbpath is not in internal memory
+	doing=mount
 	MOUNT
 elif [ $( echo $USBPATH | grep "internal_000" ) ]
 then
 	echo usb is already internal
+	doing=remount
 	REMOUNT
 fi
 
 # user feedback
-	if [ $ERROR -eq 1 ]; then
-		FB_ERROR
-	else
-		FB_DONE
-	fi
+if [ $ERROR -eq 1 ]; then
+	FB_ERROR
+elif [ $doing = "mount" ]; then
+	FB_DONE
+elif [ $doing = "remount" ]; then
+	FB_DONE
+	FB_DONE
+fi

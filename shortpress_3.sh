@@ -11,6 +11,9 @@
 # Special thanks for the Unofficial Bebop Hacking Guide (UBHG)
 # https://github.com/nicknack70/bebop
 
+# debug
+grep Hardware /proc/cpuinfo
+cat /version.txt
 
 
 # the following 2 lines ( and the "fi" at the very end of the script ) will unengage the power button
