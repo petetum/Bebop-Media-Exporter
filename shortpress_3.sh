@@ -103,6 +103,7 @@ FIXENCAPS () {
 		for ENCAPSFILE in $(find $USBPATH/media/ -type f -name '*.mp4-encaps.tmp'); do
 			ENCAPSFILE=$(echo $ENCAPSFILE | awk -F / '{print $NF}' )
 			DATFILE=$(echo $ENCAPSFILE | awk -F .mp4-encaps.tmp '{print $(1)}' ).mp4-encaps.dat
+			THUMBFILE=$(echo $ENCAPSFILE | awk -F .mp4-encaps.tmp '{print $(1)}' ).mp4.jpg
 			echo "";
 			echo "------------------------------------------------------------------"
 			echo "Processing: "$ENCAPSFILE
@@ -111,23 +112,24 @@ FIXENCAPS () {
 			echo "Begin to check available space for the .mp4-encaps.tmp and .mp4-encaps.dat files."
 			ENCAPSFILESIZE=$(($(ls -l $USBPATH/media/$ENCAPSFILE | awk '{print $(5)}')/1024))
 			DATFILESIZE=$(($(ls -l $USBPATH/media/$DATFILE | awk '{print $(5)}')/1024))
+			THUMBFILESIZE=$(($(ls -l $USBPATH/thumb/$THUMBFILE | awk '{print $(5)}')/1024))
 			INTMEMFREESPACE=$(df | grep $INTPATH | awk '{print $(NF-2)}')
-			if [ $(($ENCAPSFILESIZE+$DATFILESIZE)) -gt $INTMEMFREESPACE ];
+			if [ $(($ENCAPSFILESIZE+$DATFILESIZE+$THUMBFILESIZE)) -gt $INTMEMFREESPACE ];
 			then
 # NOT ENOUGH SPACE
 				echo "There is NOT enough space on internal memory."
 			else
 # THERE IS ENOUGH SPACE
-				echo "There is enough space. ( "$ENCAPSFILESIZE" + "$DATFILESIZE" vs "$INTMEMFREESPACE" )"
+				echo "There is enough space. ( "$ENCAPSFILESIZE" + "$DATFILESIZE" + "$THUMBFILESIZE" vs "$INTMEMFREESPACE" )"
 				echo "";
 # copy ENCAPSFILE to INTPATH
-				echo "Copy the .mp4-encaps.tmp file to internal memory as a .tmp file."
-				cp -f $USBPATH/media/$ENCAPSFILE $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp
+				echo "Copy the .mp4-encaps.tmp file to internal memory as a .temp file."
+				cp -f $USBPATH/media/$ENCAPSFILE $INTPATH/$BBDIR/media/$ENCAPSFILE.temp
 				if [ $? -ne 0 ];
 				then
 					echo "Copy Failed!"
 					echo ""
-					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$DATFILE.tmp
+					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
 					ERROR=1
 					echo "Braking the file processing loop."
 					break
@@ -138,12 +140,12 @@ FIXENCAPS () {
 				if [ -f /data/ftp/md5check_on ];
 				then
 					echo "Checking MD5.."
-					MD5CHECK $USBPATH/media/$ENCAPSFILE $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp
+					MD5CHECK $USBPATH/media/$ENCAPSFILE $INTPATH/$BBDIR/media/$ENCAPSFILE.temp
 					if [ $? -ne 0 ];
 					then
 						echo "MD5 doesn't match."
 						echo ""
-						REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$DATFILE.tmp
+						REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
 						ERROR=1
 						echo "Braking the file processing loop."
 						break
@@ -153,12 +155,12 @@ FIXENCAPS () {
 					fi
 				fi
 # copy DATFILE to INTPATH
-				echo "Copy the .mp4-encaps.dat file to internal memory as a .tmp file."
-				cp -f $USBPATH/media/$DATFILE $INTPATH/$BBDIR/media/$DATFILE.tmp
+				echo "Copy the .mp4-encaps.dat file to internal memory as a .temp file."
+				cp -f $USBPATH/media/$DATFILE $INTPATH/$BBDIR/media/$DATFILE.temp
 				if [ $? -ne 0 ];
 				then
-					echo "copy of DATFILE file failed. begin to remove .tmp file"
-					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$DATFILE.tmp
+					echo "copy of DATFILE file failed. begin to remove .temp file"
+					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
 					ERROR=1
 					echo "Braking the file processing loop."
 					break
@@ -168,12 +170,12 @@ FIXENCAPS () {
 				if [ -f /data/ftp/md5check_on ];
 				then
 					echo "Checking MD5.."
-					MD5CHECK $USBPATH/media/$DATFILE $INTPATH/$BBDIR/media/$DATFILE.tmp
+					MD5CHECK $USBPATH/media/$DATFILE $INTPATH/$BBDIR/media/$DATFILE.temp
 					if [ $? -ne 0 ];
 					then
 						echo "MD5 doesn't match."
 						echo ""
-					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$DATFILE.tmp
+					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
 						ERROR=1
 						echo "Braking the file processing loop."
 						break
@@ -182,22 +184,61 @@ FIXENCAPS () {
 						echo "";
 					fi
 				fi
-# renaming .tmp files
-			echo "Renameing .tmp files."
-			mv -f $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$ENCAPSFILE
+# copy THUMBFILE to INTPATH
+				echo "Copy the thumb file to internal memory as a .temp file."
+				cp -f $USBPATH/thumb/$THUMBFILE $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
+				if [ $? -ne 0 ];
+				then
+					echo "copy of THUMBFILE file failed. begin to remove .temp file"
+					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
+					ERROR=1
+					echo "Braking the file processing loop."
+					break
+				fi
+				echo "The file copied successfully.";
+# MD5 check THUMBFILE
+				if [ -f /data/ftp/md5check_on ];
+				then
+					echo "Checking MD5.."
+					MD5CHECK $USBPATH/thumb/$THUMBFILE $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
+					if [ $? -ne 0 ];
+					then
+						echo "MD5 doesn't match."
+						echo ""
+					REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
+						ERROR=1
+						echo "Braking the file processing loop."
+						break
+					else
+						echo "MD5 hash match."
+						echo "";
+					fi
+				fi
+# renaming .temp files
+			echo "Renameing .temp files."
+			mv -f $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$ENCAPSFILE
 			if [ $? -ne 0 ];
 			then
-				echo Error when renaming .tmp file.
-				REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$DATFILE.tmp
+				echo Error when renaming .temp file.
+				REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
 				ERROR=1
 				echo "Braking the file processing loop."
 				break
 			fi
-			mv -f $INTPATH/$BBDIR/media/$DATFILE.tmp $INTPATH/$BBDIR/media/$DATFILE
+			mv -f $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/media/$DATFILE
 			if [ $? -ne 0 ];
 			then
-				echo Error when renaming .tmp file.
-				REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.tmp $INTPATH/$BBDIR/media/$DATFILE.tmp
+				echo Error when renaming .temp file.
+				REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
+				ERROR=1
+				echo "Braking the file processing loop."
+				break
+			fi
+			mv -f $INTPATH/$BBDIR/thumb/$THUMBFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE
+			if [ $? -ne 0 ];
+			then
+				echo Error when renaming .temp file.
+				REMOVE_TMP_FILES $INTPATH/$BBDIR/media/$ENCAPSFILE.temp $INTPATH/$BBDIR/media/$DATFILE.temp $INTPATH/$BBDIR/thumb/$THUMBFILE.temp
 				ERROR=1
 				echo "Braking the file processing loop."
 				break
@@ -212,6 +253,10 @@ FIXENCAPS () {
 			if [ -f $USBPATH/media/$DATFILE ];
 			then
 				rm -f $USBPATH/media/$DATFILE
+			fi
+			if [ -f $USBPATH/thumb/$THUMBFILE ];
+			then
+				rm -f $USBPATH/thumb/$THUMBFILE
 			fi
 			echo "remove complete (in theory). no check has been done if remove was successful"
 			echo "";
@@ -522,8 +567,8 @@ elif [ ! $( echo $USBPATH | grep -v $INTPATH ) ]; then
 # If this check enabled then don't move it after the one that check if there is any file in media folder.
 #elif [ ! $( echo $USBPATH | grep '/data/ftp/' ) ]; then
 #	ERROR=1; echo "usb device mounted somewhere where it should't be. ( $USBPATH )"
-elif [ ! "$(ls -A $INTPATH/$BBDIR/media/)" ] ; then
-	ERROR=2; echo "Internal media folder empty. Nothing to copy."
+#elif [ ! "$(ls -A $INTPATH/$BBDIR/media/)" ] ; then
+#	ERROR=2; echo "Internal media folder empty. Nothing to copy."
 else
 	ERROR=0; echo "All tests O.K."
 fi

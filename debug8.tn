@@ -1,3 +1,7 @@
-/bin/onoffbutton/shortpress_8.sh foreground > /data/ftp/debug.txt
+if [ ! -f /bin/onoffbutton/shortpress_8.sh ]; then
+echo "ERROR. shortpress_8.sh doesn't exist." > /data/ftp/debug.txt
+else
+/bin/onoffbutton/shortpress_8.sh foreground > /data/ftp/debug.txt 2>&1
 unix2dos /data/ftp/debug.txt 
+fi
 exit

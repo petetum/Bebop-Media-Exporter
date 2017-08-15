@@ -73,12 +73,12 @@ FB_START
 sleep 1
 FB_WORKING &
 
-if [ -e /dev/sda ]; then
+if [ "$( mount | grep '/dev/sda' )" ] || [ "$( mount | grep '/dev/sdb' )" ]; then
 # USB OTG drive path
 	USBPATH=$( mount | grep '/dev/sda' | awk '{print $3}' )
 # USB OTG drive hardware
 	USBDEV=$( mount | grep '/dev/sda' | awk '{print $1}' )
-elif [ -e /dev/sdb ]; then
+elif [ "$( mount | grep '/dev/sdb' )" ]; then
 # USB OTG drive path
 	USBPATH=$( mount | grep '/dev/sdb' | awk '{print $3}' )
 # USB OTG drive hardware
@@ -87,24 +87,21 @@ fi
 
 
 
-MOUNT () {
-# make USB drive writeable if it is not
-if [ $USBPATH ] && [ ! $(mount | grep $USBPATH | awk '{ print $6 }' | awk -F '(' '{ print $2 }' | awk -F ',' '{ print $1 }') = "rw" ]; 
-then
-	mount -o remount,rw $USBPATH
-fi
 
+MOUNT () {
 # Checks...
 if [ ! $BBDIR ]; then
 	ERROR=1; echo "Hardware NOT compatible."
 elif [ ! $USBPATH ]; then
 	ERROR=1; echo "USB drive not mounted"
+elif [ ! -e /dev/sda ] && [ ! -e /dev/sdb ]; then
+	ERROR=1; echo there is no usb device
 else
-	ERROR=0; echo "All tests O.K."
+	echo "All tests O.K."
 fi
 
 # Creating folders on the USB drive.
-if [ $ERROR -ne 1 ];
+if [ ! $ERROR ];
 then
 	if [ ! -d $USBPATH/academy/ ]; then	mkdir $USBPATH/academy/; echo academy folder created; fi
 	if [ ! -d $USBPATH/media/ ];   then mkdir $USBPATH/media/;   echo media folder created; fi
@@ -113,7 +110,7 @@ then
 fi
 sync
 # Unmounting USB Drive
-if [ $ERROR -ne 1 ];
+if [ ! $ERROR ];
 then
 	echo Unmounting USB Drive
 	umount $USBPATH
@@ -122,11 +119,13 @@ then
 		echo "Cannot unmount!"
 		echo ""
 		ERROR=1
+	else
+		echo Done
 	fi
 fi
 
 # Re-mounting USB Drive to $INTMEM/$BBDIR
-if [ $ERROR -ne 1 ];
+if [ ! $ERROR ];
 then
 	echo Re-mounting USB Drive to $INTMEM/$BBDIR
 	mount $USBDEV $INTPATH/$BBDIR
@@ -138,32 +137,32 @@ then
 	fi
 fi
 
-if [ $ERROR -eq 0 ] && [ -e /dev/sda ]; then
+if [ ! $ERROR ] && [ -e /dev/sda ]; then
 #debug
+	OLDUSBPATH=$USBPATH 
 	echo $USBPATH > /tmp/oldusbpath.tmp
 	USBPATH=$( mount | grep '/dev/sda' | awk '{print $3}' )
-elif [ $ERROR -eq 0 ] && [ -e /dev/sdb ]; then
+elif [ ! $ERROR ] && [ -e /dev/sdb ]; then
 	USBPATH=$( mount | grep '/dev/sdb' | awk '{print $3}' )
 fi
 
-if [ $ERROR -eq 0 ] && [ ! $USBPATH ];
+if [ ! $ERROR ] && [ ! $USBPATH ];
 then
 	echo "USB Drive unplugged"
 	ERROR=1
-elif [ $ERROR -eq 0 ] && [ ! $USBPATH == "$INTPATH/$BBDIR" ];
+elif [ ! $ERROR ] && [ ! $USBPATH == "$INTPATH/$BBDIR" ];
 then
 	echo "Failed to mount USB Drive for direct recordning."
 	ERROR=1
-elif [ $ERROR -eq 0 ];
+elif [ ! $ERROR ];
 then
 	echo "USB Drive successfully mounted for direct recording."
-if [ -d $USBPATH ] && [ ! "$(ls -A $USBPATH)" ]; then rm -rf $USBPATH; fi
+if [ -d $OLDUSBPATH ] && [ ! "$(ls -A $OLDUSBPATH)" ]; then rm -rf $OLDUSBPATH; fi
 fi
 }
 
 REMOUNT () {
 OLDUSBPATH=$( if [ -f /tmp/oldusbpath.tmp ]; then cat /tmp/oldusbpath.tmp ; fi )
-sync
 
 # Checks...
 if [ ! $BBDIR ]; then
@@ -171,14 +170,14 @@ if [ ! $BBDIR ]; then
 elif [ ! $USBPATH ]; then
 	ERROR=1; echo "USB drive not mounted"
 else
-	ERROR=0; echo "All tests O.K."
+	echo "All tests O.K."
 fi
 
 # Unmounting USB Drive
-if [ $ERROR -ne 1 ];
+if [ ! $ERROR ];
 then
 	echo Unmounting USB Drive
-	umount $USBPATH
+	umount $INTPATH/$BBDIR
 	if [ $? -ne 0 ];
 	then
 		echo "Cannot unmount!"
@@ -189,91 +188,79 @@ fi
 
 # Re-mounting USB Drive to external
 
-if [ $ERROR -ne 1 ];
-then
-	if [ $OLDUSBPATH ] && [ -d $OLDUSBPATH ]
-	then
+
+if [ ! $ERROR ] && [ ! -e /dev/sda ] && [ ! -e /dev/sdb ]; then
+	echo There is no usb device. Nothing to remount.
+	if [ -f /tmp/oldusbpath.tmp ]; then rm -f /tmp/oldusbpath.tmp ;	fi
+else
+	if [ ! $ERROR ] && [ ! "$( mount | grep '/dev/sda' )" ] && [ ! "$( mount | grep '/dev/sdb' )" ]; then
+		if [ $OLDUSBPATH ] && [ -d $OLDUSBPATH ]; then
 			echo Directory already exists $OLDUSBPATH
 			echo ""
-	elif [ $OLDUSBPATH ] && [ ! -d $OLDUSBPATH ]
-	then
-		echo Creating directory $OLDUSBPATH
-		mkdir $OLDUSBPATH
-		if [ $? -ne 0 ];
-		then
-			echo "Cannot create directory!"
-			echo ""
-			ERROR=1
-		fi
-	elif [ ! $OLDUSBPATH ]
-	then
-		OLDUSBPATH=/data/ftp/usbdrive_000
-		echo Creating directory $OLDUSBPATH
-		if [ ! -d $OLDUSBPATH ]
-		then
+		elif [ $OLDUSBPATH ] && [ ! -d $OLDUSBPATH ]; then
+			echo Creating directory $OLDUSBPATH
 			mkdir $OLDUSBPATH
-			if [ $? -ne 0 ];
+			if [ $? -ne 0 ]; then
+				ERROR=1; echo "Cannot create directory!"
+			fi
+		elif [ ! $OLDUSBPATH ]; then
+			OLDUSBPATH=/data/ftp/usbdrive_000
+			echo Creating directory $OLDUSBPATH
+			if [ ! -d $OLDUSBPATH ]
 			then
-				echo "Cannot create directory!"
-				echo ""
-				ERROR=1
+				mkdir $OLDUSBPATH
+				if [ $? -ne 0 ];
+				then
+					echo "Cannot create directory!"
+					echo ""
+					ERROR=1
+				fi
 			fi
 		fi
-		if [ ! -d $OLDUSBPATH ];
-		then
-			echo "Directory doesn't exist! "$OLDUSBPATH
-			echo ""
-			ERROR=1
-		fi
 	fi
-fi
 
-
-if [ $ERROR -ne 1 ] && [ $OLDUSBPATH ];
-then
-	echo Re-mounting USB Drive to $OLDUSBPATH
-	mount $USBDEV $OLDUSBPATH
-	if [ $? -ne 0 ];
-	then
-		echo "Cannot mount!"
-		echo ""
+	if [ ! $ERROR ] && [ ! -d $OLDUSBPATH ]; then
+		echo "Directory doesn't exist! "$OLDUSBPATH
 		ERROR=1
 	fi
-fi
+		
+	if [ ! $ERROR ] && [ $OLDUSBPATH ];
+	then
+		echo Re-mounting USB Drive to $OLDUSBPATH
+		mount $USBDEV $OLDUSBPATH
+		if [ $? -ne 0 ];
+		then
+			echo "Cannot mount!"
+			echo ""
+			ERROR=1
+		else
+			echo Done
+		fi
+	fi
 
-if [ $ERROR -eq 0 ] && [ -e /dev/sda ]; 
-then
-	USBPATH=$( mount | grep '/dev/sda' | awk '{print $3}' )
-elif [ $ERROR -eq 0 ] && [ -e /dev/sdb ]; then
-	USBPATH=$( mount | grep '/dev/sdb' | awk '{print $3}' )
-fi
+	if [ ! $ERROR ] && [ -e /dev/sda ]; 
+	then
+		USBPATH=$( mount | grep '/dev/sda' | awk '{print $3}' )
+	elif [ ! $ERROR ] && [ -e /dev/sdb ]; then
+		USBPATH=$( mount | grep '/dev/sdb' | awk '{print $3}' )
+	fi
 
-if [ $ERROR -eq 0 ] && [ ! -e /dev/sda ];
-then
-	echo "USB Drive unplugged"
-	ERROR=1
-elif [ $ERROR -eq 0 ] && [ ! $USBPATH ];
-then
-	echo "USB Drive successfully unmounted but couldn't remounted. It will be available after reboot."
-elif [ $ERROR -eq 0 ] && [ $USBPATH == $OLDUSBPATH ];
-then
-	echo "USB Drive successfully mounted for as an external drive."
-	if [ -f /tmp/oldusbpath.tmp ]; then rm -f /tmp/oldusbpath.tmp ;	fi
+	if [ ! $ERROR ] && [ ! -e /dev/sda ];
+	then
+		echo "USB Drive unplugged"
+		ERROR=1
+	elif [ ! $ERROR ] && [ ! $USBPATH ];
+	then
+		echo "USB Drive successfully unmounted but couldn't remounted. It will be available after reboot."
+	elif [ ! $ERROR ] && [ $USBPATH == $OLDUSBPATH ];
+	then
+		echo "USB Drive successfully mounted for as an external drive."
+		if [ -f /tmp/oldusbpath.tmp ]; then rm -f /tmp/oldusbpath.tmp ;	fi
+	fi
 fi
 }
 
-if [ ! $USBDEV ];
-then
-	echo there is no usb device
-	echo ""
-	ERROR=1
-elif [ ! $USBPATH ];
-then
-	echo there is no usb path
-	echo Please unplug and re insert USB Drive
-	echo ""
-	ERROR=1
-elif [ ! $( echo $USBPATH | grep "internal_000" ) ]
+if [ ! $( echo $USBPATH | grep "internal_000" ) ]
 then
 	echo usbpath is not in internal memory
 	doing=mount
@@ -286,7 +273,7 @@ then
 fi
 
 # user feedback
-if [ $ERROR -eq 1 ]; then
+if [ $ERROR ]; then
 	FB_ERROR
 elif [ $doing = "mount" ]; then
 	FB_DONE

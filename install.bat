@@ -162,6 +162,7 @@ echo   Connect to it's WI-FI network in Windows.
 echo.
 echo   When connected press any key to continue.
 pause >nul
+cls
 echo.
 echo   Please press the POWER BUTTON 4 times on your drone.
 echo.
@@ -184,7 +185,9 @@ echo   The tail light will be flashing and the
 echo   cooling fan will stop spinning at some point.
 echo   Once all complete the fan will turn on again.
 echo.
-echo   Press any key to go back to MAIN MENU. this utility.. and then wait patiently!
+echo               Please wait patiently!
+echo.
+echo   Press any key to go back to MAIN MENU this utility.. 
 pause >nul
 goto menu
 
@@ -198,7 +201,7 @@ echo.
 echo   Please note.. by reseting the drone you will loose all media files and settings.
 echo   However the installed sctipt will NOT be deleted.
 echo   Run this utility again after your drone has rebooted and select 
-echo   option no 2 or 4 to remove scripts.
+echo   option no 3 or 4 to remove scripts.
 echo   Press any key to go back to MAIN MENU.
 pause >nul
 goto menu
@@ -298,12 +301,6 @@ pause >nul
 goto menu
 
 :telnet_remprev_error
-echo   Failed to connect to Drone.
-echo   Installation terminates.
-echo   Press any key to go back to MAIN MENU.
-pause >nul
-goto menu
-
 :ftp_connection_error
 echo   Failed to connect to Drone.
 echo   Installation terminates.
@@ -326,7 +323,16 @@ goto menu
 
 :ftpdd_connection_error
 echo   Failed to remove temporaly files from your drone.
-echo   Please connect to your drone ( ftp://192.168.42.1 ) using an FTP client and delete fileas manually.
+echo.
+echo   Please reset your drone to factory
+echo   settings by pressing and holding the 
+echo   POWER BUTTON for 10 seconds.
+echo   Please note.. by reseting the drone you will loose all media files and settings.
+echo.
+echo   It will take a up to 5 minutes to complete 
+echo   then your drone will reboot.
+echo.
+echo.
 echo   Installation terminates.
 echo   Press any key to go back to MAIN MENU.
 pause >nul
