@@ -20,7 +20,7 @@ echo   Press any key to continue to Main Menu.
 pause >nul
 REM ------- MENU -----------
 :menu
-Mode con cols=80 lines=25
+Mode con cols=80 lines=26
 color 1A
 cls
 ECHO.
@@ -95,7 +95,7 @@ REM ---------- INSTALL ---------
 SET "M="
 cls
 :select
-Mode con cols=80 lines=30
+Mode con cols=82 lines=30
 echo.
 echo.
 echo    There will be 3 scripts installed on your Bebop. 
