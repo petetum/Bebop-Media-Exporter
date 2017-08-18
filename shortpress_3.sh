@@ -1,7 +1,7 @@
 #! /bin/sh
 # This script is for PARROT BEBOP and BEBOP 2 Dones.
 # Moving media files from internal memory to USB OTG Drive.
-# v1.4a by PeteTum 12/08/2017
+# v1.4a by PeteTum 18/08/2017
 #
 # Written by PeteTum.
 # http://youtube.com/c/PeteTum

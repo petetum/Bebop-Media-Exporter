@@ -1,14 +1,14 @@
-# Bebop Export Media to USB by PeteTum
-For exporting media files from your Bebop Drone / Bebop 2 to external USB drive. 
+# 'Bebop Media Exporter' for exporting media files to a USB drive.
+Copyright (C) 2016-2017  Pete Tum http://github.com/petetum
+v1.4 beta - 18/08/2017
 
-                  !!!!!! CAUTION !!!!!!
-  As per confirmed by PARROT CUSTOMER SERVICE AND SUPPORT
-  Any modifications on Telnet voids the warranty.
-  BY USING THIS UTILITY YOU WILL VOID YOUR DRONE'S WARRANTY!
+This script is for PARROT BEBOP and BEBOP 2 Aircraft ONLY
+
+  !!!!!! CAUTION !!!!!!
+As confirmed by PARROT CUSTOMER SERVICE AND SUPPORT
+Any modifications on Telnet voids the warranty.
+BY USING THIS UTILITY YOU WILL VOID YOUR DRONE'S WARRANTY!
   
-This script is for PARROT BEBOP and BEBOP 2 Dones.
-v1.4 alpha - 10/08/2017
-
 Find me on youtube.
 https://www.youtube.com/c/PeteTum
 
