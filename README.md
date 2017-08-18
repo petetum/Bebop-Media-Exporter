@@ -20,15 +20,15 @@ Tested on Bebop Drone - firmware version 4.0.6
 NOT Tested on Bebop 2 - but it should work just fine
 
 How to install the scripts:
-  - Download file
-	BEBOP_EXPORT_TO_USB_v1.4a.EXE
-	https://xxxxxx.xxxx
+  - Download the installer
+	https://github.com/petetum/Bebop-Media-Exporter/raw/master/installer/Bebop_Media_Expoter_by_PeteTum.EXE
   - Run the utility
   - Follow on screen instructions
   - Do You like my work?
-    If you do then why not buy me a coffee. I like it with cinnamon on top :)
-    It won't brake the bank..  Go to the link below to donate me.
-    https://goo.gl/wxkBjX
+     Then why not buy me a coffee. I like it with cinnamon :)
+     It won't brake the bank..
+	 Go to the link below to donate me.
+     https://goo.gl/KvtaW3
   - Thank you for donating! You are Amazing!
   - You're done
 
@@ -103,9 +103,7 @@ ERRORS
   If you have any mysterious errors you can run the DEBUG through your computer.
   Just use menu option 9 in the installation utility and wait 
   until task finishes then you will be shown the log file.
-  Please send the log file (if you wish) to bebopexporttousb@gmail.com so I can have a look and try to solve the issue.
-  If you don't want to share your email address with me then just use an anonymous email service
-  like this: https://anonymousemail.me/
+  You can send the log file to bebopmediaexporter@gmail.com
 
 CREDITS
   Credit to everyone on Parrot Forum who have contributed to the project that I found in September 2016.
@@ -116,4 +114,3 @@ Applications used in this utility:
   PuTTY (Plink): http://www.chiark.greenend.org.uk/~sgtatham/putty/ (licensed under the MIT licence) PuTTY is copyright 1997-2017 Simon Tatham.
   NCFTP http://www.ncftp.com/ncftp/ (licensed under the The Clarified Artistic License)
   FAT 32 FORMATTER http://www.ridgecrop.demon.co.uk/index.htm?guiformat.htm (licensed under the GPL license) Tom Thornhill
-  IExpress 2.0 to create self extracring self installing package. Microsoft Corporation. All rights reserved. http://www.microsoft.com/
