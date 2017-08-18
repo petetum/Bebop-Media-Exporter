@@ -20,7 +20,7 @@ echo   Press any key to continue to Main Menu.
 pause >nul
 REM ------- MENU -----------
 :menu
-Mode con cols=80 lines=26
+Mode con cols=80 lines=30
 color 1A
 cls
 ECHO.
@@ -62,7 +62,7 @@ GOTO menu
 
 REM ---------- user instructions ---------
 :instructions
-Mode con cols=42 lines=12
+Mode con cols=80 lines=30
 cls
 echo.
 echo     Turn ON your Bebop and connect to
@@ -143,7 +143,7 @@ echo        compare it to the original.
 echo        It takes twice the time to complete.
 echo.
 SET /P VERS=   Type 1 or 2 then press ENTER: 
-
+IF not %VERS%==1 IF not %VERS%==2 GOTO menu
 
 call :instructions
 Mode con cols=80 lines=30
