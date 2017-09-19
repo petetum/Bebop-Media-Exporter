@@ -1,0 +1,7 @@
+if [ ! -f /bin/onoffbutton/shortpress_3.sh ]; then
+echo "ERROR. shortpress_3.sh doesn't exist." > /data/ftp/debug.txt
+else
+/bin/onoffbutton/shortpress_3.sh foreground > /data/ftp/debug.txt 2>&1
+unix2dos /data/ftp/debug.txt 
+fi
+exit

@@ -1,6 +1,6 @@
 mount -o remount,rw /
 sleep 1
-chmod 0+rw /dev/ttyPA1
+chmod 666 /dev/ttyPA1
 mv -f /data/ftp/shortpress_2.sh /bin/onoffbutton/shortpress_2.sh
 mv -f /data/ftp/shortpress_3.sh /bin/onoffbutton/shortpress_3.sh
 mv -f /data/ftp/shortpress_8.sh /bin/onoffbutton/shortpress_8.sh
@@ -10,5 +10,6 @@ chmod 755 /bin/onoffbutton/shortpress_3.sh
 chmod 755 /bin/onoffbutton/shortpress_8.sh
 sleep 1
 mount -o remount,ro /
+sleep 1
 sync
 exit

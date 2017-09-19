@@ -11,42 +11,25 @@
 # Special thanks for the Unofficial Bebop Hacking Guide (UBHG)
 # https://github.com/nicknack70/bebop
 
-# the following 2 lines ( and the "fi" at the very end of the script ) will unengage the power button
-# so you can power off the drone ( if neccesery ) while script is still running.
-if [ ! $1 ]; then exec /bin/onoffbutton/shortpress_3.sh foreground &
-elif [ $1 == "foreground" ]; then
-
-# debug
-echo "------------------------ DEBUG ------------------------"
-echo "Script version: v1.4a"
-grep Hardware /proc/cpuinfo
-echo "Firmware version "$(cat /version.txt)
-echo
-echo "Contents of /data/ftp"
-ls -x /data/ftp
-echo
-echo "List of devices starting with /dev/sd"
-ls -x /dev/sd*
-echo "-------------------------------------------------------"
-echo
 
 # set user feedback
-SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }
-ERR_SOUND() { BLDC_Test_Bench -M 2 >/dev/null 2>&1; usleep 600000; }
-LIGHT_R() { BLDC_Test_Bench -G 1 0 0 >/dev/null 2>&1; }
-LIGHT_O() { BLDC_Test_Bench -G 1 1 0 >/dev/null 2>&1; }
-LIGHT_G() { BLDC_Test_Bench -G 0 1 0 >/dev/null 2>&1; }
-LIGHT_LIT() { sprop "system.shutdown" "0" >/dev/null 2>&1; }
-LIGHT_FLA() { sprop "system.shutdown" "1" >/dev/null 2>&1; }
+STA_SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }
+ERR_SOUND() { BLDC_Test_Bench -M 2 >/dev/null 2>&1; usleep 800000; }
+LIGHT_RED() { BLDC_Test_Bench -G 1 0 0 >/dev/null 2>&1; }
+LIGHT_ORN() { BLDC_Test_Bench -G 1 1 0 >/dev/null 2>&1; }
+LIGHT_GRN() { BLDC_Test_Bench -G 0 1 0 >/dev/null 2>&1; }
+LIGHT_LIT() { echo 60 > $led; }
+LIGHT_BLK() { echo 0 > $led; }
+LIGHT_OLD() { echo ${ob} > $led; }
 
-FB_START() { if [ $BBDIR == "Bebop_2" ]; then LIGHT_FLA; else LIGHT_R; fi; }
+FB_START() { if [ $BBDIR == "Bebop_2" ]; then LIGHT_LIT; else LIGHT_RED; fi; }
 FB_WORKING() {
 # starting heartbeat
 	touch /tmp/heartbeat.tmp
 	( while [ -f /tmp/heartbeat.tmp ]; do
 		if [ $BBDIR == "Bebop_2" ];
-			then LIGHT_FLA; usleep 50000; LIGHT_LIT; usleep 50000; LIGHT_FLA; usleep 50000; LIGHT_LIT
-			else LIGHT_G; usleep 50000; LIGHT_O; usleep 50000; LIGHT_G; usleep 50000; LIGHT_O
+			then LIGHT_BLK; usleep 50000; LIGHT_LIT; usleep 50000; LIGHT_BLK; usleep 50000; LIGHT_LIT
+			else LIGHT_GRN; usleep 50000; LIGHT_ORN; usleep 50000; LIGHT_GRN; usleep 50000; LIGHT_ORN
 		fi
 		usleep 800000;
 	done )
@@ -55,21 +38,21 @@ FB_DONE () {
 # stopping heartbeat
 rm -f /tmp/heartbeat.tmp
 if [ $BBDIR == "Bebop_2" ]
-	then SOUND; LIGHT_LIT
-	else SOUND; LIGHT_G
+	then STA_SOUND; LIGHT_OLD
+	else STA_SOUND; LIGHT_GRN
 fi
 }
 FB_ERROR () { 
 # stopping heartbeat
 rm -f /tmp/heartbeat.tmp
 if [ $BBDIR == "Bebop_2" ]; 
-	then ( ERR_SOUND; ERR_SOUND; ERR_SOUND; ERR_SOUND; ERR_SOUND ) & ( C=0; while [ $C -lt 20 ]; do LIGHT_LIT; usleep 50000; LIGHT_FLA; usleep 5000; let C=$C+1; done )
-	else ( ERR_SOUND; ERR_SOUND; ERR_SOUND; ERR_SOUND; ERR_SOUND ) & ( C=0; while [ $C -lt 20 ]; do LIGHT_G; usleep 50000; LIGHT_R; usleep 5000; let C=$C+1; done )
+	then ( CS=0; while [ $CS -lt 5 ]; do ERR_SOUND; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_LIT; usleep 50000; LIGHT_BLK; usleep 5000; let CL=$CL+1; done; LIGHT_OLD; )
+	else ( CS=0; while [ $CS -lt 5 ]; do ERR_SOUND; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_GRN; usleep 50000; LIGHT_RED; usleep 5000; let CL=$CL+1; done )
 fi 
 }
 
 REMOVE_TMP_FILES () {
-	for filetoremove in $1 $2 $3 $4; do
+	for filetoremove in $1 $2 $3 $4 $5 $6; do
 		if [ $filetoremove ] && [ -f $filetoremove ]; then
 			echo $filetoremove" exists. Removing.."
 			rm -f $filetoremove
@@ -536,6 +519,12 @@ INTPATH=/data/ftp/internal_000
 # detect hardware and set BBDIR
 BBDIR=$( if grep -q Mykonos3 /proc/cpuinfo; then echo Bebop_Drone; elif grep -q Milos /proc/cpuinfo; then echo Bebop_2; fi )
 
+#for feedback light
+if [ $BBDIR == "Bebop_2" ]; then
+	led=/sys/devices/platform/leds_pwm/leds/milos:super_led/brightness
+	ob=$(cat $led)
+fi
+
 # user feedback
 FB_START &
 
@@ -563,12 +552,6 @@ elif [ ! $USBPATH ]; then
 	ERROR=1; echo "USB drive not mounted"
 elif [ ! $( echo $USBPATH | grep -v $INTPATH ) ]; then
 	ERROR=1; echo "USB device mounted INSIDE internal memory. ( $USBPATH )"
-# this check may be unneccesery ? 
-# If this check enabled then don't move it after the one that check if there is any file in media folder.
-#elif [ ! $( echo $USBPATH | grep '/data/ftp/' ) ]; then
-#	ERROR=1; echo "usb device mounted somewhere where it should't be. ( $USBPATH )"
-#elif [ ! "$(ls -A $INTPATH/$BBDIR/media/)" ] ; then
-#	ERROR=2; echo "Internal media folder empty. Nothing to copy."
 else
 	ERROR=0; echo "All tests O.K."
 fi
@@ -611,7 +594,4 @@ if [ $ERROR -eq 1 ]; then
 	FB_ERROR
 else
 	FB_DONE
-fi
-
-# end of the power button thingy:
 fi

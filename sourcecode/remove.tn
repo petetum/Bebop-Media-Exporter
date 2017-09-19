@@ -10,14 +10,16 @@ if [ -L $INTMEM/$BBDIR/thumb ]; then rm -f $INTMEM/$BBDIR/thumb ; mkdir $INTMEM/
 
 mount -o remount,rw /
 sleep 1
+chmod 660 /dev/ttyPA1
 if [ -f /bin/onoffbutton/feedback.sh ]; then rm -f /bin/onoffbutton/feedback.sh; fi
 if [ -f /bin/onoffbutton/shortpress_2.sh ]; then rm -f /bin/onoffbutton/shortpress_2.sh; fi
 if [ -f /bin/onoffbutton/shortpress_3.sh ]; then rm -f /bin/onoffbutton/shortpress_3.sh; fi
 if [ -f /bin/onoffbutton/shortpress_5.sh ]; then rm -f /bin/onoffbutton/shortpress_5.sh; fi
 if [ -f /bin/onoffbutton/shortpress_6.sh ]; then rm -f /bin/onoffbutton/shortpress_6.sh; fi
+if [ -f /bin/onoffbutton/shortpress_7.sh ]; then rm -f /bin/onoffbutton/shortpress_7.sh; fi
 if [ -f /bin/onoffbutton/shortpress_8.sh ]; then rm -f /bin/onoffbutton/shortpress_8.sh; fi
 if [ -f /bin/onoffbutton/shortpress_9.sh ]; then rm -f /bin/onoffbutton/shortpress_9.sh; fi
-
+sleep 1
 mount -o remount,ro /
-
+sleep 1
 exit
