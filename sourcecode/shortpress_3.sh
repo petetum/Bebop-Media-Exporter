@@ -13,8 +13,8 @@
 
 
 # set user feedback
-STA_SOUND() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }
-ERR_SOUND() { BLDC_Test_Bench -M 2 >/dev/null 2>&1; usleep 800000; }
+SOUND_STA() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }
+SOUND_ERR() { BLDC_Test_Bench -M 2 >/dev/null 2>&1; usleep 800000; }
 LIGHT_RED() { BLDC_Test_Bench -G 1 0 0 >/dev/null 2>&1; }
 LIGHT_ORN() { BLDC_Test_Bench -G 1 1 0 >/dev/null 2>&1; }
 LIGHT_GRN() { BLDC_Test_Bench -G 0 1 0 >/dev/null 2>&1; }
@@ -38,16 +38,16 @@ FB_DONE () {
 # stopping heartbeat
 rm -f /tmp/heartbeat.tmp
 if [ $BBDIR == "Bebop_2" ]
-	then STA_SOUND; LIGHT_OLD
-	else STA_SOUND; LIGHT_GRN
+	then SOUND_STA; LIGHT_OLD
+	else SOUND_STA; LIGHT_GRN
 fi
 }
 FB_ERROR () { 
 # stopping heartbeat
 rm -f /tmp/heartbeat.tmp
 if [ $BBDIR == "Bebop_2" ]; 
-	then ( CS=0; while [ $CS -lt 5 ]; do ERR_SOUND; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_LIT; usleep 50000; LIGHT_BLK; usleep 5000; let CL=$CL+1; done; LIGHT_OLD; )
-	else ( CS=0; while [ $CS -lt 5 ]; do ERR_SOUND; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_GRN; usleep 50000; LIGHT_RED; usleep 5000; let CL=$CL+1; done )
+	then ( CS=0; while [ $CS -lt 5 ]; do SOUND_ERR; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_LIT; usleep 50000; LIGHT_BLK; usleep 5000; let CL=$CL+1; done; LIGHT_OLD; )
+	else ( CS=0; while [ $CS -lt 5 ]; do SOUND_ERR; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_GRN; usleep 50000; LIGHT_RED; usleep 5000; let CL=$CL+1; done )
 fi 
 }
 
