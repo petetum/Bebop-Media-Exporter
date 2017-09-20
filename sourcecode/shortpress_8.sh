@@ -11,6 +11,10 @@
 # https://github.com/Daggers/Bebop2CopyMoveRecord2USBDrive
 
 # set user feedback
+if [ $BBDIR == "Bebop_2" ]; then
+	led=/sys/devices/platform/leds_pwm/leds/milos:super_led/brightness
+	ob=$(cat $led)
+fi
 SOUND_STA() { BLDC_Test_Bench -M 1 >/dev/null 2>&1; usleep 1000000; }
 SOUND_ERR() { BLDC_Test_Bench -M 2 >/dev/null 2>&1; usleep 800000; }
 LIGHT_RED() { BLDC_Test_Bench -G 1 0 0 >/dev/null 2>&1; }
@@ -19,7 +23,6 @@ LIGHT_GRN() { BLDC_Test_Bench -G 0 1 0 >/dev/null 2>&1; }
 LIGHT_LIT() { echo 60 > $led; }
 LIGHT_BLK() { echo 0 > $led; }
 LIGHT_OLD() { echo ${ob} > $led; }
-
 FB_START() { if [ $BBDIR == "Bebop_2" ]; then LIGHT_LIT; else LIGHT_RED; fi; }
 FB_WORKING() {
 # starting heartbeat
@@ -55,12 +58,6 @@ INTPATH=/data/ftp/internal_000
 
 # detect hardware and set BBDIR
 BBDIR=$( if grep -q Mykonos3 /proc/cpuinfo; then echo Bebop_Drone; elif grep -q Milos /proc/cpuinfo; then echo Bebop_2; fi )
-
-#for feedback light
-if [ $BBDIR == "Bebop_2" ]; then
-	led=/sys/devices/platform/leds_pwm/leds/milos:super_led/brightness
-	ob=$(cat $led)
-fi
 
 # user feedback
 #FB_START
