@@ -2,5 +2,17 @@ if df | grep '/dev/sda1'; then
 umount $( df | grep '/dev/sda1' | awk '{print $NF}' )
 sleep 1
 fi
+if df | grep '/dev/sdb1'; then
+umount $( df | grep '/dev/sdb1' | awk '{print $NF}' )
+sleep 1
+fi
+if df | grep '/dev/sda'; then
+umount $( df | grep '/dev/sda' | awk '{print $NF}' )
+sleep 1
+fi
+if df | grep '/dev/sdb'; then
+umount $( df | grep '/dev/sdb' | awk '{print $NF}' )
+sleep 1
+fi
 sh -c '/bin/onoffbutton/verylongpress_0.sh > /dev/null 2>&1 &' &
 exit

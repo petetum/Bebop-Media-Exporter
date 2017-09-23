@@ -1,6 +1,9 @@
 # 'Bebop Media Exporter' for exporting media files to a USB drive.
 Copyright (C) 2016-2017  Pete Tum http://github.com/petetum
-v1.4 beta - 18/08/2017
+v1.4 - 22/09/2017
+
+Tested on Bebop Drone - v4.0.6
+Tested on Bebop 2 - v4.2.1
 
 This script is for PARROT BEBOP and BEBOP 2 Aircraft ONLY
 
@@ -15,23 +18,12 @@ https://www.youtube.com/c/PeteTum
 The author shall not be held responsible for any damages that may occur to your device or your media files.
 Proceed at your own risk.
 
-
-Tested on Bebop Drone - firmware version 4.0.6
-NOT Tested on Bebop 2 - but it should work just fine
-
 How to install the scripts:
   - Download the installer
-	https://github.com/petetum/Bebop-Media-Exporter/raw/master/installer/Bebop_Media_Expoter_by_PeteTum.EXE
+	https://github.com/petetum/Bebop-Media-Exporter/
   - Run the utility
   - Follow on screen instructions
-  - Do You like my work?
-     Then why not buy me a coffee. I like it with cinnamon :)
-     It won't brake the bank..
-	 Go to the link below to donate me.
-     https://goo.gl/KvtaW3
-  - Thank you for donating! You are Amazing!
   - You're done
-
 
 There will be 3 scripts installed on your drone. 
 Just press the power button on your drone the number of times below 
@@ -101,7 +93,7 @@ BROKEN VIDEO FILES ( aka .mp4-encaps.tmp .mp4-encaps.dat )
 
 ERRORS
   If you have any mysterious errors you can run the DEBUG through your computer.
-  Just use menu option 9 in the installation utility and wait 
+  Just use menu option 9 in the main menu of the installation utility and wait 
   until task finishes then you will be shown the log file.
   You can send the log file to bebopmediaexporter@gmail.com
 
@@ -109,6 +101,10 @@ CREDITS
   Credit to everyone on Parrot Forum who have contributed to the project that I found in September 2016.
   Without the initial help I wouldn't be able to deal with this project.
   https://community.parrot.com/t5/Bebop-Drone/Copy-pics-vids-DIRECTLY-to-USB-Stick/td-p/113176
+  Special thanks for the Unofficial Bebop Hacking Guide (UBHG). Lots of useful info there!
+  https://github.com/nicknack70/bebop
+  Special thanks for Daggers. There was a few things I have learned from his code. Thank You!
+  https://github.com/Daggers/
 
 Applications used in this utility:
   PuTTY (Plink): http://www.chiark.greenend.org.uk/~sgtatham/putty/ (licensed under the MIT licence) PuTTY is copyright 1997-2017 Simon Tatham.
