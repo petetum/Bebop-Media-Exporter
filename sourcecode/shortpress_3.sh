@@ -1,14 +1,14 @@
 #! /bin/sh
 # This script is for PARROT BEBOP and BEBOP 2 Dones.
 # Moving media files from internal memory to USB OTG Drive.
-# v1.4 by PeteTum 22/09/2017
+# v1.4.1 by PeteTum 26/09/2017
 #
 # Written by PeteTum.
 # http://youtube.com/c/PeteTum
 # To download full installer go to https://github.com/petetum/Bebop-Media-Exporter/
 
 # debug
-echo "Script version: v1.4"
+echo "Script version: v1.4.1"
 echo "Bebop Hardware: "$(grep Hardware /proc/cpuinfo)
 echo "Firmware version: "$(gprop ro.parrot.build.version)
 echo
@@ -32,7 +32,7 @@ LIGHT_ORN() { BLDC_Test_Bench -G 1 1 0 >/dev/null 2>&1; }
 LIGHT_GRN() { BLDC_Test_Bench -G 0 1 0 >/dev/null 2>&1; }
 LIGHT_LIT() { echo 60 > $super_led/brightness; }
 LIGHT_BLK() { echo 0 > $super_led/brightness; }
-LIGHT_ERR() { sprop "system.ready" "0"; }
+LIGHT_ERR() { sprop "system.ready" "1"; sleep 1; sprop "system.ready" "0"; }
 FB_START() { if [ $BBDIR == "Bebop_2" ]; then sprop "system.ready" "1"; LIGHT_LIT; else LIGHT_RED; fi; }
 FB_WORKING() {
 # starting heartbeat
@@ -59,7 +59,7 @@ FB_ERROR () {
 rm -f /tmp/heartbeat.tmp
 sleep 1
 if [ $BBDIR == "Bebop_2" ]; 
-    then ( CS=0; while [ $CS -lt 5 ]; do SOUND_ERR; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_LIT; usleep 50000; LIGHT_BLK; usleep 5000; let CL=$CL+1; done; usleep 50000; LIGHT_ERR; )
+    then ( CS=0; while [ $CS -lt 5 ]; do SOUND_ERR; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_LIT; usleep 50000; LIGHT_BLK; usleep 5000; let CL=$CL+1; done; sleep 1; LIGHT_LIT; sleep 1; LIGHT_ERR; )
     else ( CS=0; while [ $CS -lt 5 ]; do SOUND_ERR; let CS=$CS+1; done ) & ( CL=0; while [ $CL -lt 20 ]; do LIGHT_GRN; usleep 50000; LIGHT_RED; usleep 5000; let CL=$CL+1; done )
 fi 
 }

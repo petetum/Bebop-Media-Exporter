@@ -1,9 +1,10 @@
 # 'Bebop Media Exporter' for exporting media files to a USB drive.
 Copyright (C) 2016-2017  Pete Tum http://github.com/petetum
-v1.4 - 22/09/2017
+v1.4.1 by PeteTum 26/09/2017
 
 Tested on Bebop Drone - v4.0.6
-Tested on Bebop 2 - v4.2.1
+Tested on Bebop 2 - v4.3.0 and v4.2.1
+May work on older versions too..
 
 This script is for PARROT BEBOP and BEBOP 2 Aircraft ONLY
 
